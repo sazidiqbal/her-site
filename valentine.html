@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey You... ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b81;
+            --secondary: #ff4757;
+            --bg: #ffe2e6;
+            --white: #ffffff;
+            --text: #2f3542;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- BACKGROUND ANIMATIONS --- */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 71, 87, 0.15);
+            font-size: 2rem;
+            animation: floatUp linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* --- CARD CONTAINER --- */
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 71, 87, 0.15);
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            animation: entrance 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes entrance {
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- PROGRESS BAR --- */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #f1f2f6;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1 {
+            color: var(--text);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+
+        p {
+            color: #747d8c;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* --- BUTTONS --- */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            background: #f1f2f6;
+            border: 2px solid transparent;
+            padding: 18px;
+            border-radius: 18px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background: #fff;
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.2);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* --- VALENTINE SPECIFIC --- */
+        .valentine-btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn-yes {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+        .btn-yes:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        .btn-no {
+            background: #f1f2f6;
+            color: #a4b0be;
+            flex: 1;
+        }
+
+        /* --- ANIMATED POPUP MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            width: 80%;
+            max-width: 350px;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+        .modal h2 { margin-top: 0; color: var(--secondary); }
+        .modal button { width: 100%; background: var(--secondary); color: white; margin-top: 15px;}
+
+        /* --- UTILS --- */
+        .hidden { display: none; }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* --- SUCCESS --- */
+        .big-heart {
+            font-size: 5rem;
+            color: var(--secondary);
+            animation: beat 1s infinite;
+        }
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="bg-container"></div>
+
+    <div class="container" id="main-card">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+
+        <div id="quiz-section">
+            <h1 id="q-title">Question 1</h1>
+            <p id="q-text">Loading...</p>
+            <div class="options" id="options-container">
+                </div>
+        </div>
+
+        <div id="ask-section" class="hidden">
+            <h1>Nice job! 🎉</h1>
+            <p>You know me so well. Now for the most important question of all...</p>
+            <h2 style="color: var(--primary); font-size: 2rem; margin: 30px 0;">Will you be my Valentine? 🌹</h2>
+            <div class="valentine-btn-group">
+                <button class="btn-yes" onclick="handleYes()">YES! 😍</button>
+                <button class="btn-no" onclick="handleNo()">No...</button>
+            </div>
+        </div>
+
+        <div id="success-section" class="hidden">
+            <div class="big-heart">💖</div>
+            <h1>YAYYY!</h1>
+            <p>I knew you'd say yes! (Eventually 😉)</p>
+            <p>Can't wait to celebrate with you!</p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="error-modal">
+        <div class="modal">
+            <h2>⚠️ Error 404</h2>
+            <p>Rejection not found in database.</p>
+            <p>The "No" button is broken. Please try the other one! 🥺</p>
+            <button onclick="closeModal()">Okay, fine!</button>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        //  👇 EDIT YOUR QUESTIONS HERE 👇
+        // ==========================================
+        const quizData = [
+            {
+                question: "What is my favorite comfort food?",
+                options: ["Pizza 🍕", "Sushi 🍣", "Ice Cream 🍦", "Chocolate 🍫"],
+                correctIndex: 0 // 0 = First option
+            },
+            {
+                question: "Where would I rather be right now?",
+                options: ["The Beach 🏖️", "The Mountains 🏔️", "In Bed 🛌", "With You ❤️"],
+                correctIndex: 3
+            },
+            {
+                question: "What is my nickname for you?",
+                options: ["Kolija❤️", "Honey", "Cutie", "Princess"], // Change these!
+                correctIndex: 0
+            },
+            {
+                question: "Which movie could I watch 100 times?",
+                options: ["Titanic", "Avengers", "The Notebook", "Shrek"],
+                correctIndex: 1
+            },
+            {
+                question: "What do I love most about you?",
+                options: ["Your Smile", "Your Eyes", "Everything 🥰", "Your Laugh"],
+                correctIndex: 2
+            }
+        ];
+        // ==========================================
+
+        let currentQ = 0;
+        const mainCard = document.getElementById('main-card');
+        const progressBar = document.getElementById('progress');
+        const qTitle = document.getElementById('q-title');
+        const qText = document.getElementById('q-text');
+        const optionsDiv = document.getElementById('options-container');
+
+        // Init Background Hearts
+        function createHearts() {
+            const container = document.getElementById('bg-container');
+            const symbols = ['❤️', '💖', '🌹', '✨', '💌'];
+            
+            for(let i=0; i<20; i++) {
+                const el = document.createElement('div');
+                el.classList.add('bg-heart');
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                el.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(el);
+            }
+        }
+        createHearts();
+
+        // Load Question
+        function loadQuestion() {
+            // Update Progress
+            const progress = ((currentQ) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            if (currentQ >= quizData.length) {
+                showProposal();
+                return;
+            }
+
+            const data = quizData[currentQ];
+            qTitle.innerText = `Question ${currentQ + 1}`;
+            qText.innerText = data.question;
+            optionsDiv.innerHTML = '';
+
+            data.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(index, btn) {
+            if (index === quizData[currentQ].correctIndex) {
+                // Correct Animation
+                btn.style.background = '#2ed573';
+                btn.style.color = 'white';
+                setTimeout(() => {
+                    currentQ++;
+                    loadQuestion();
+                }, 400);
+            } else {
+                // Wrong Animation (Shake)
+                btn.style.background = '#ff4757';
+                btn.style.color = 'white';
+                mainCard.classList.add('shake');
+                setTimeout(() => {
+                    mainCard.classList.remove('shake');
+                    btn.style.background = '#f1f2f6';
+                    btn.style.color = '#2f3542';
+                }, 500);
+            }
+        }
+
+        function showProposal() {
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('ask-section').classList.remove('hidden');
+            progressBar.style.width = '100%';
+        }
+
+        // --- VALENTINE LOGIC ---
+
+        function handleNo() {
+            document.getElementById('error-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('error-modal').classList.remove('active');
+        }
+
+        function handleYes() {
+            document.getElementById('ask-section').classList.add('hidden');
+            document.getElementById('success-section').classList.remove('hidden');
+            
+            // Confetti Explosion
+            for(let i=0; i<100; i++) {
+                createConfetti();
+            }
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-10px';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = ['#ff6b81', '#ff4757', '#ffa502', '#2ed573'][Math.floor(Math.random()*4)];
+            confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+            document.body.appendChild(confetti);
+        }
+
+        // Add CSS for confetti fall
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                to { transform: translateY(100vh) rotate(720deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Start
+        loadQuestion();
+
+    </script>
+</body>
+</html>
